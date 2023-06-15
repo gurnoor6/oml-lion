@@ -70,6 +70,20 @@ def lr_runs():
         print(f"lion_accuracy = {lion_accuracy}")
         print(f"sophia_accuracy = {sophia_accuracy}")
 
+def batch_size_runs():
+    sgd_accuracy = []
+    lion_accuracy = []
+    sophia_accuracy = []
+    for batch_size in [32, 64, 128, 256, 512, 1024]:
+        print(f"batch_size = {batch_size}")
+        trainloader, testloader = get_train_test_loaders(train_batch_size=batch_size)
+        sgd_accuracy.append(sgd(1e-4, trainloader, testloader))
+        lion_accuracy.append(lion(1e-4, trainloader, testloader))
+        sophia_accuracy.append(sophia(1e-4, trainloader, testloader))
+
+        print(f"sgd_accuracy = {sgd_accuracy}")
+        print(f"lion_accuracy = {lion_accuracy}")
+        print(f"sophia_accuracy = {sophia_accuracy}")
 
 def main():
     lr_runs()
