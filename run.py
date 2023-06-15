@@ -1,5 +1,6 @@
 
 import torch
+import numpy as np
 import torch.optim as optim
 from model import Net
 import torch.nn as nn
@@ -56,19 +57,32 @@ def sophia(lr, trainloader, testloader):
     return accuracy
 
 def lr_runs():
-    sgd_accuracy = []
-    lion_accuracy = []
-    sophia_accuracy = []
-    for lr in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1]:
-        print(f"lr = {lr}")
-        trainloader, testloader = get_train_test_loaders()
-        sgd_accuracy.append(sgd(lr, trainloader, testloader))
-        lion_accuracy.append(lion(lr, trainloader, testloader))
-        sophia_accuracy.append(sophia(lr, trainloader, testloader))
+    # perform the experiment 10 times
+    sgd_accuracy_mean = []
+    lion_accuracy_mean = []
+    sophia_accuracy_mean = []
+    for _ in range(10):
+        sgd_accuracy = []
+        lion_accuracy = []
+        sophia_accuracy = []
+        for lr in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1]:
+            print(f"lr = {lr}")
+            trainloader, testloader = get_train_test_loaders()
+            sgd_accuracy.append(sgd(lr, trainloader, testloader))
+            lion_accuracy.append(lion(lr, trainloader, testloader))
+            sophia_accuracy.append(sophia(lr, trainloader, testloader))
 
-        print(f"sgd_accuracy = {sgd_accuracy}")
-        print(f"lion_accuracy = {lion_accuracy}")
-        print(f"sophia_accuracy = {sophia_accuracy}")
+            print(f"sgd_accuracy = {sgd_accuracy}")
+            print(f"lion_accuracy = {lion_accuracy}")
+            print(f"sophia_accuracy = {sophia_accuracy}")
+        
+        sgd_accuracy_mean.append(np.array(sgd_accuracy))
+        lion_accuracy_mean.append(np.array(lion_accuracy))
+        sophia_accuracy_mean.append(np.array(sophia_accuracy))
+
+    print("SGD accuracy mean: ", np.mean(sgd_accuracy_mean, axis=0))
+    print("LION accuracy mean: ", np.mean(lion_accuracy_mean, axis=0))
+    print("SOPHIA accuracy mean: ", np.mean(sophia_accuracy_mean, axis=0))    
 
 def batch_size_runs():
     sgd_accuracy = []
