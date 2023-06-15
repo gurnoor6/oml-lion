@@ -1,6 +1,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+torch.manual_seed(0)
+
 
 class Net(nn.Module):
     def __init__(self):

@@ -1,6 +1,8 @@
 import torch
 from model import Net
 
+torch.manual_seed(0)
+
 def train(model, criterion, optimizer, trainloader, device, num_epochs=2):
   for epoch in range(num_epochs):  # loop over the dataset multiple times
 

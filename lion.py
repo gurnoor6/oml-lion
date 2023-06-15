@@ -16,6 +16,8 @@
 import torch
 from torch.optim.optimizer import Optimizer
 
+torch.manual_seed(0)
+
 
 class Lion(Optimizer):
   r"""Implements Lion algorithm."""

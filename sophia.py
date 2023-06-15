@@ -4,6 +4,8 @@ from torch import Tensor
 from torch.optim.optimizer import Optimizer
 from typing import List, Optional
 
+torch.manual_seed(0)
+
 
 class SophiaG(Optimizer):
     def __init__(self, params, lr=1e-4, betas=(0.965, 0.99), rho = 0.04,
