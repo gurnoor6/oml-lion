@@ -4,9 +4,9 @@ import numpy as np
 import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
-from image_classification.model import Net
 from optimizers.lion import Lion
 from optimizers.sophia import SophiaG
+from image_classification.model import Net
 from image_classification.utils import train, eval
 from plots.plot import plot_lr_accuracy, plot_bs_accuracy
 from image_classification.dataset import get_train_test_loaders
