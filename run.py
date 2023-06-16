@@ -1,13 +1,15 @@
 
 import torch
 import numpy as np
-import torch.optim as optim
-from model import Net
 import torch.nn as nn
-from utils import train, eval
-from dataset import get_train_test_loaders
-from lion import Lion
-from sophia import SophiaG
+import torch.optim as optim
+from tqdm import tqdm
+from image_classification.model import Net
+from optimizers.lion import Lion
+from optimizers.sophia import SophiaG
+from image_classification.utils import train, eval
+from plots.plot import plot_lr_accuracy, plot_bs_accuracy
+from image_classification.dataset import get_train_test_loaders
 
 torch.manual_seed(0)
 
@@ -56,51 +58,69 @@ def sophia(lr, trainloader, testloader):
 
     return accuracy
 
-def lr_runs():
-    # perform the experiment 10 times
-    sgd_accuracy_mean = []
-    lion_accuracy_mean = []
-    sophia_accuracy_mean = []
-    for _ in range(10):
-        sgd_accuracy = []
-        lion_accuracy = []
-        sophia_accuracy = []
-        for lr in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1]:
-            print(f"lr = {lr}")
-            trainloader, testloader = get_train_test_loaders()
-            sgd_accuracy.append(sgd(lr, trainloader, testloader))
-            lion_accuracy.append(lion(lr, trainloader, testloader))
-            sophia_accuracy.append(sophia(lr, trainloader, testloader))
+def adam(lr, trainloader, testloader):
+    print("ADAM")
+    model = Net() # init
+    model.to(device)
+    print(f"model has {torch.nn.utils.parameters_to_vector(model.parameters()).numel()} learnable parameters")
 
-            print(f"sgd_accuracy = {sgd_accuracy}")
-            print(f"lion_accuracy = {lion_accuracy}")
-            print(f"sophia_accuracy = {sophia_accuracy}")
-        
-        sgd_accuracy_mean.append(np.array(sgd_accuracy))
-        lion_accuracy_mean.append(np.array(lion_accuracy))
-        sophia_accuracy_mean.append(np.array(sophia_accuracy))
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    print("SGD accuracy mean: ", np.mean(sgd_accuracy_mean, axis=0))
-    print("LION accuracy mean: ", np.mean(lion_accuracy_mean, axis=0))
-    print("SOPHIA accuracy mean: ", np.mean(sophia_accuracy_mean, axis=0))    
+    model = train(model, criterion, optimizer, trainloader, device)
+    accuracy = eval(model, device, testloader)
 
-def batch_size_runs():
+    return accuracy
+
+def lr_runs(lrs=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1]):
+    print("lr_runs")
     sgd_accuracy = []
     lion_accuracy = []
     sophia_accuracy = []
-    for batch_size in [32, 64, 128, 256, 512, 1024]:
-        print(f"batch_size = {batch_size}")
-        trainloader, testloader = get_train_test_loaders(train_batch_size=batch_size)
-        sgd_accuracy.append(sgd(1e-4, trainloader, testloader))
-        lion_accuracy.append(lion(1e-4, trainloader, testloader))
-        sophia_accuracy.append(sophia(1e-4, trainloader, testloader))
+    adam_accuracy = []
 
-        print(f"sgd_accuracy = {sgd_accuracy}")
-        print(f"lion_accuracy = {lion_accuracy}")
-        print(f"sophia_accuracy = {sophia_accuracy}")
+    for lr in tqdm(lrs):
+        print(f"lr = {lr}")
+        trainloader, testloader = get_train_test_loaders()
+        sgd_accuracy.append(sgd(lr, trainloader, testloader))
+        lion_accuracy.append(lion(lr, trainloader, testloader))
+        sophia_accuracy.append(sophia(lr, trainloader, testloader))
+        adam_accuracy.append(adam(lr, trainloader, testloader))
+        
+
+    print(f"sgd_accuracy = {sgd_accuracy}")
+    print(f"lion_accuracy = {lion_accuracy}")
+    print(f"sophia_accuracy = {sophia_accuracy}")
+    print(f"adam_accuracy = {adam_accuracy}")
+    plot_lr_accuracy(sgd_accuracy, lion_accuracy, sophia_accuracy, adam_accuracy, lrs, "Accuracy (in %)", "classlr.png")
+    
+
+def batch_size_runs(batch_sizes=[32, 64, 128, 256, 512, 1024]):
+    print("batch_size_runs")
+    sgd_accuracy = []
+    lion_accuracy = []
+    sophia_accuracy = []
+    adam_accuracy = []
+
+    for bs in tqdm(batch_sizes):
+        print(f"bs = {bs}")
+        trainloader, testloader = get_train_test_loaders(train_batch_size=bs, test_batch_size=bs)
+        sgd_accuracy.append(sgd(1e-1, trainloader, testloader))
+        lion_accuracy.append(lion(1e-3, trainloader, testloader))
+        sophia_accuracy.append(sophia(1e-3, trainloader, testloader))
+        adam_accuracy.append(adam(1e-3, trainloader, testloader))
+        
+
+    print(f"sgd_accuracy = {sgd_accuracy}")
+    print(f"lion_accuracy = {lion_accuracy}")
+    print(f"sophia_accuracy = {sophia_accuracy}")
+    print(f"adam_accuracy = {adam_accuracy}")
+    plot_bs_accuracy(sgd_accuracy, lion_accuracy, sophia_accuracy, adam_accuracy, batch_sizes, "Accuracy (in %)", "classbs.png")
+
 
 def main():
     lr_runs()
+    batch_size_runs()
 
 
 if __name__ == '__main__':

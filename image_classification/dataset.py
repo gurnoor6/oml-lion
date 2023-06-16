@@ -9,8 +9,8 @@ transform = transforms.Compose(
      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 def get_train_test_loaders(train_batch_size=256, test_batch_size=512):
-    trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=False, transform=transform)
-    testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=False, transform=transform)
+    trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+    testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=train_batch_size, shuffle=True, num_workers=1)
     testloader = torch.utils.data.DataLoader(testset, batch_size=test_batch_size, shuffle=False, num_workers=1)
 
