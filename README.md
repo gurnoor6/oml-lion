@@ -4,8 +4,8 @@
 In this project, we compare the performance of the following 4 optimizers: SGD, Adam, Lion and Sophia. We test the performance on 2 tasks: image classification on CIFAR-10 dataset and regression on Concrete_Data.csv from lab05 of CS439 course at EPFL.
 
 Team Members:
-Gurnoor Singh Khurana
-Aayush Kumar
+Gurnoor Singh Khurana <br>
+Aayush Kumar <br>
 Pradhit CR
 
 ## Project Structure
