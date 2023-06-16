@@ -24,6 +24,6 @@ This code was tested on Python verion 3.8.1.
 
 Running the code is straightforward.
 * Classification task: `python run_classification.py`
-* Regression task: `pytho =n run_regression.py`
+* Regression task: `python run_regression.py`
 
 After running, the plots are generated in the main directory. 
