@@ -1,5 +1,6 @@
 import torch
 
+# training and evaluation loop adapted from https://colab.research.google.com/github/pytorch/tutorials/blob/gh-pages/_downloads/4e865243430a47a00d551ca0579a6f6c/cifar10_tutorial.ipynb
 def train(model, criterion, optimizer, trainloader):
   for epoch in range(20):  # loop over the dataset multiple times
     running_loss = 0.0
