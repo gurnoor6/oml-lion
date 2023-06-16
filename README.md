@@ -6,7 +6,7 @@ In this project, we compare the performance of the following 4 optimizers: SGD, 
 Team Members:
 Gurnoor Singh Khurana <br>
 Aayush Kumar <br>
-Pradhit CR
+Pradhit Canchi Rangam
 
 ## Project Structure
 This repository contains the following important components
