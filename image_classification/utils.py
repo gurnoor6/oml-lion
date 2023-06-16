@@ -2,6 +2,7 @@ import torch
 
 torch.manual_seed(0)
 
+# train, test code taken from https://colab.research.google.com/github/pytorch/tutorials/blob/gh-pages/_downloads/4e865243430a47a00d551ca0579a6f6c/cifar10_tutorial.ipynb
 def train(model, criterion, optimizer, trainloader, device, num_epochs=2):
   for epoch in range(num_epochs):  # loop over the dataset multiple times
 
@@ -19,7 +20,6 @@ def train(model, criterion, optimizer, trainloader, device, num_epochs=2):
           loss.backward()
           optimizer.step()
 
-          # print statistics
           running_loss += loss.item()
 
   return model

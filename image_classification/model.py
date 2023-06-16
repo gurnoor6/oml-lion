@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 torch.manual_seed(0)
 
-
+# model code taken from https://colab.research.google.com/github/pytorch/tutorials/blob/gh-pages/_downloads/4e865243430a47a00d551ca0579a6f6c/cifar10_tutorial.ipynb
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()

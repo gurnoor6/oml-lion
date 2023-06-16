@@ -1,3 +1,7 @@
+"""
+Implementation of Sophia Optimizer taken from the official Sophia repository
+https://github.com/Liuhong99/Sophia
+"""
 import math
 import torch
 from torch import Tensor

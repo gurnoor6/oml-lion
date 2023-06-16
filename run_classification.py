@@ -13,14 +13,16 @@ from image_classification.dataset import get_train_test_loaders
 
 torch.manual_seed(0)
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # We will run on CUDA if there is a GPU available
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("run: ", device)
 
 def sgd(lr, trainloader, testloader):
+    """
+    Method to train the model using SGD
+    """
     print("SGD")
     model = Net() # init
     model.to(device)
-    print(f"model has {torch.nn.utils.parameters_to_vector(model.parameters()).numel()} learnable parameters")
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
@@ -31,10 +33,12 @@ def sgd(lr, trainloader, testloader):
     return accuracy
 
 def lion(lr, trainloader, testloader):
+    """
+    Method to train the model using Lion
+    """
     print("LION")
     model = Net() # init
     model.to(device)
-    print(f"model has {torch.nn.utils.parameters_to_vector(model.parameters()).numel()} learnable parameters")
 
     criterion = nn.CrossEntropyLoss()
     optimizer = Lion(model.parameters(), lr=lr)
@@ -45,10 +49,12 @@ def lion(lr, trainloader, testloader):
     return accuracy
 
 def sophia(lr, trainloader, testloader):
+    """
+    Method to train the model using Sophia
+    """
     print("SOPHIA")
     model = Net() # init
     model.to(device)
-    print(f"model has {torch.nn.utils.parameters_to_vector(model.parameters()).numel()} learnable parameters")
 
     criterion = nn.CrossEntropyLoss()
     optimizer = SophiaG(model.parameters(), lr=lr)
@@ -59,10 +65,12 @@ def sophia(lr, trainloader, testloader):
     return accuracy
 
 def adam(lr, trainloader, testloader):
+    """
+    Method to train the model using Adam
+    """
     print("ADAM")
     model = Net() # init
     model.to(device)
-    print(f"model has {torch.nn.utils.parameters_to_vector(model.parameters()).numel()} learnable parameters")
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -73,6 +81,10 @@ def adam(lr, trainloader, testloader):
     return accuracy
 
 def lr_runs(lrs=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1]):
+    """
+    Method to run the experiment for different learning rates
+    for all optimizers
+    """
     print("lr_runs")
     sgd_accuracy = []
     lion_accuracy = []
@@ -96,6 +108,10 @@ def lr_runs(lrs=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1]):
     
 
 def batch_size_runs(batch_sizes=[32, 64, 128, 256, 512, 1024]):
+    """
+    Method to run the experiment for different batch sizes
+    for all optimizers
+    """
     print("batch_size_runs")
     sgd_accuracy = []
     lion_accuracy = []

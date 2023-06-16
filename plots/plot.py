@@ -1,6 +1,16 @@
 import matplotlib.pyplot as plt
 
 def plot_lr_accuracy(sgd_accuracy, lion_accuracy, sophia_accuracy, adam_accuracy, lrs, ylabel, filename):
+    """
+    Plot accuracy/loss vs learning rate
+    @param sgd_accuracy: list of accuracies/losses for SGD (float[])
+    @param lion_accuracy: list of accuracies/losses for Lion (float[])
+    @param sophia_accuracy: list of accuracies/losses for Sophia (float[])
+    @param adam_accuracy: list of accuracies/losses for Adam (float[])
+    @param lrs: list of learning rates (float[])
+    @param ylabel: label for y-axis (str)
+    @param filename: filename to save plot to (str)
+    """
     plt.figure()
     # plot accuracy vs lr
     lrs = list(map(lambda x: str(x), lrs))
@@ -19,6 +29,16 @@ def plot_lr_accuracy(sgd_accuracy, lion_accuracy, sophia_accuracy, adam_accuracy
 
 
 def plot_bs_accuracy(sgd_accuracy, lion_accuracy, sophia_accuracy, adam_accuracy, batch_sizes, ylabel, filename):
+    """
+    Plot accuracy/loss vs batch size
+    @param sgd_accuracy: list of accuracies/losses for SGD (float[])
+    @param lion_accuracy: list of accuracies/losses for Lion (float[])
+    @param sophia_accuracy: list of accuracies/losses for Sophia (float[])
+    @param adam_accuracy: list of accuracies/losses for Adam (float[])
+    @param batch_sizes: list of batch sizes (int[])
+    @param ylabel: label for y-axis (str)
+    @param filename: filename to save plot to (str)
+    """
     plt.figure()
     # plot accuracy vs lr
     batch_sizes = list(map(lambda x: str(x), batch_sizes))
